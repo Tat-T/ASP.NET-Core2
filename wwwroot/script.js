@@ -19,7 +19,7 @@
      </tr>
  `).join('');
 
- function saveACocktail(cocktailName) {
+ function saveCocktail(cocktailName) {
     const cocktail = { name: cocktailName };
     fetch('/api/Cocktail/SaveCocktail', {
         method: 'POST',
