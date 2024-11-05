@@ -1,4 +1,3 @@
- // Динамическое добавление заголовков таблицы
  const headers = ['Название', 'Состав', 'Загрузка'];
  const headerRow = document.getElementById('tableHeaders');
  
@@ -20,12 +19,36 @@
      </tr>
  `).join('');
 
- function saveCocktail(cocktailName) {
-     console.log(`Saving ${cocktailName}`);
- }
+ function saveACocktail(cocktailName) {
+    const cocktail = { name: cocktailName };
+    fetch('/api/Cocktail/SaveCocktail', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(cocktail)
+    })
+    .then(response => {
+        if (response.ok) {
+            alert(`Cocktail ${cocktailName} saved successfully!`);
+        } else {
+            alert(`Failed to save ${cocktailName}.`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
 
- function saveCocktails(format) {
-     console.log(`Saving all cocktails as ${format}`);
- }
-
- loadCocktails();
+// Сохранение всего списка в заданном формате (JSON или XML)
+function saveCocktails(format) {
+    fetch(`/api/Cocktail/output?format=${format}`, {
+        method: 'POST'
+    })
+    .then(response => {
+        if (response.ok) {
+            alert(`Cocktails saved as ${format.toUpperCase()} successfully!`);
+        } else {
+            alert(`Failed to save cocktails as ${format.toUpperCase()}.`);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}

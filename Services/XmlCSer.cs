@@ -5,7 +5,7 @@ using System.Xml.Serialization;
 
 namespace CocktailApp.Services
 {
-    public class XmlCSer : ICSer
+   public class XmlCSer : ICSer
     {
         public string Serialize(List<Cocktail> cocktails)
         {
