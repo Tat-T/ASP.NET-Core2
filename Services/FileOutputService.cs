@@ -9,7 +9,7 @@ namespace CocktailApp.Services
     {
         public void OutputToFile(List<Cocktail> cocktails, string format)
         {
-           if (format.ToLower() == "json")
+            if (format.ToLower() == "json")
         {
             var options = new JsonSerializerOptions
             {

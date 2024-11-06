@@ -20,3 +20,5 @@ Autofac/Ninject.
 ### Запуск
 
 `dotnet run`
+
+http://localhost:5064/Index.html страница со списком 

@@ -1,41 +1,45 @@
- const headers = ['Название', 'Состав', 'Загрузка'];
- const headerRow = document.getElementById('tableHeaders');
- 
- headerRow.innerHTML = headers.map(header => `<th>${header}</th>`).join('');
+const headers = ['Название', 'Состав', 'Загрузка'];
+const headerRow = document.getElementById('tableHeaders');
 
- // Пример данных для таблицы
- const cocktails = [
-     { name: 'Маргарита', composition: 'Текила, Лаймовый сок, Куантро или трипл-сек, соль для ободка бокала'},
-     { name: 'Мохито', composition: 'Белый ром, сок лайма, сахар, листья мяты, газированная вода' },
-     { name: 'Пина Колада', composition: 'Светлый ром, кокосовое молоко, ананасовый сок' },
- ];
+headerRow.innerHTML = headers.map(header => `<th>${header}</th>`).join('');
 
- const cocktailTable = document.getElementById('cocktailTable');
- cocktailTable.innerHTML = cocktails.map(cocktail => `
-     <tr>
-         <td>${cocktail.name}</td>
-         <td>${cocktail.composition}</td>
-         <td><button class="btn btn-primary" onclick="saveCocktail('${cocktail.name}')">Загрузить в файл</button></td>
-     </tr>
- `).join('');
+// Пример данных для таблицы
+const cocktails = [
+    { name: 'Маргарита', composition: 'Текила, Лаймовый сок, Куантро или трипл-сек, соль для ободка бокала' },
+    { name: 'Мохито', composition: 'Белый ром, сок лайма, сахар, листья мяты, газированная вода' },
+    { name: 'Пина Колада', composition: 'Светлый ром, кокосовое молоко, ананасовый сок' },
+];
 
- function saveCocktail(cocktailName) {
-    const cocktail = { name: cocktailName };
+const cocktailTable = document.getElementById('cocktailTable');
+cocktailTable.innerHTML = cocktails.map(cocktail => `
+    <tr>
+        <td>${cocktail.name}</td>
+        <td>${cocktail.composition}</td>
+        <td><button class="btn btn-primary" onclick="saveCocktail('${cocktail.name}')">Загрузить в файл</button></td>
+    </tr>
+`).join('');
+
+function saveCocktail(cocktailName) {
+    const cocktail = cocktails.find(c => c.name === cocktailName); // Находим полную информацию о коктейле
+    if (!cocktail) {
+        alert('Cocktail not found!');
+        return;
+    }
+    
     fetch('/api/Cocktail/SaveCocktail', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(cocktail)
+        body: JSON.stringify(cocktail) // Отправляем полную информацию о коктейле
     })
     .then(response => {
         if (response.ok) {
-            alert(`Cocktail ${cocktailName} saved successfully!`);
+            alert(`Коктейль "${cocktailName}" успешно сохранен!`);
         } else {
-            alert(`Failed to save ${cocktailName}.`);
+            alert(`Не удалось сохранить коктейль "${cocktailName}".`);
         }
     })
-    .catch(error => console.error('Error:', error));
 }
 
 // Сохранение всего списка в заданном формате (JSON или XML)
@@ -45,10 +49,10 @@ function saveCocktails(format) {
     })
     .then(response => {
         if (response.ok) {
-            alert(`Cocktails saved as ${format.toUpperCase()} successfully!`);
+            alert(`Коктейли успешно сохранены в формате ${format.toUpperCase()}!`);
         } else {
-            alert(`Failed to save cocktails as ${format.toUpperCase()}.`);
+            alert(`Не удалось сохранить коктейли в формате ${format.toUpperCase()}.`);
         }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => console.error('Ошибка:', error));
 }
